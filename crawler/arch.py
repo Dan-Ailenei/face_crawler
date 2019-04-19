@@ -66,12 +66,6 @@ def crawl(subject, credentials):
         add_friends_to_queue(friends, people)
 
 
-class Person:
-    def __init__(self, identifier, picture):
-        self.identifier = identifier
-        self.picture = picture
-
-
 if __name__ == '__main__':
     format_string = '%(asctime)s %(levelname)s - %(message)s'
     date_format = '%H:%M:%S %d-%b-%y'
