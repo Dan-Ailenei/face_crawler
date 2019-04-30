@@ -3,6 +3,7 @@ sa faci relatii pentru a reantrena baza de date
 tre sa iei in considerare ca fiecare regex pe care l ai pus poate sa dea fail
 poate folosim un link extractor
 requesturile au priority, te poti folosi sau nu de asta :??
+trebuie verificat neaparat daca url-urile sunt precedate de facebook.oom
 
 
 https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#cookies-mw
@@ -17,3 +18,5 @@ ASTA AZI: https://docs.scrapy.org/en/latest/topics/developer-tools.html
 https://docs.scrapy.org/en/latest/topics/benchmarking.html
 
 https://docs.scrapy.org/en/latest/topics/jobs.html
+
+https://www.facebook.com/ioana.t.brezeanu
