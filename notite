@@ -6,6 +6,8 @@ requesturile au priority, te poti folosi sau nu de asta :??
 trebuie verificat neaparat daca url-urile sunt precedate de facebook.oom
 trebuie verificat daca numele este valid pentru prioritate
 
+programul ia 521 din 559 de linkuri, regexu nu mere la toate
+
 https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#cookies-mw
 
 https://docs.scrapy.org/en/latest/topics/practices.html#bans
