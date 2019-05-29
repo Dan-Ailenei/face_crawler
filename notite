@@ -8,6 +8,10 @@ trebuie verificat daca numele este valid pentru prioritate
 
 programul ia 521 din 559 de linkuri, regexu nu mere la toate
 
+/about poate sa fie // uneori ( ca toate linkurile de altfel probabil)
+
+2019-05-28 18:39:21 [scrapy.core.scraper] ERROR: Spider must return Request, BaseItem, dict or None, got 'ResultSet' in <GET https://m.facebook.com/dan.ailenei.9/friends>
+
 https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#cookies-mw
 
 https://docs.scrapy.org/en/latest/topics/practices.html#bans
