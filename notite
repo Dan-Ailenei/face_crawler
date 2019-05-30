@@ -1,10 +1,8 @@
 nu uita sa faci un requirements
-sa faci relatii pentru a reantrena baza de date
 tre sa iei in considerare ca fiecare regex pe care l ai pus poate sa dea fail
-poate folosim un link extractor
-requesturile au priority, te poti folosi sau nu de asta :??
 trebuie verificat neaparat daca url-urile sunt precedate de facebook.oom
 trebuie verificat daca numele este valid pentru prioritate
+daca nu merge netu calumea, facebook trimite doar o parte din response
 
 programul ia 521 din 559 de linkuri, regexu nu mere la toate
 
