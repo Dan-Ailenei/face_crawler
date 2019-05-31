@@ -30,6 +30,6 @@ NEWSPIDER_MODULE = 'tryscrappy.spiders'
 
 ROBOTSTXT_OBEY = False
 
-DOWNLOADER_MIDDLEWARES = {
-    'tryscrappy.middlewares.LogginDownloaderMiddleware': 710,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#     'tryscrappy.middlewares.LogginDownloaderMiddleware': 710,
+# }

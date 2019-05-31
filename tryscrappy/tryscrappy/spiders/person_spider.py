@@ -4,16 +4,12 @@
 # -*- coding: utf-8 -*-
 from argparse import ArgumentError
 from scrapy.conf import settings as scrapy_settings
-from orm.ormsetup import setup_orm
-setup_orm()
 import logging
 from io import BytesIO
 import requests
 import scrapy
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from scrapy import Spider
-from scrapy.http import FormRequest
-from tryscrappy.credentials import credentials
 from tryscrappy.selector import PageSelector
 from tryscrappy.utils import clean_url
 from models.models import Person
@@ -38,24 +34,11 @@ class PersonSpider(Spider):
         self.selector = PageSelector(self.SUBJECT)
 
     def start_requests(self):
-        yield scrapy.Request('https://www.facebook.com/login', self.parse)
-
-    def parse(self, response):
-        yield FormRequest.from_response(response,
-                                        formdata=credentials,
-                                        callback=self.after_login,
-                                        priority=10000000,
-                                        dont_filter=True
-                                        )
-
-    def after_login(self, response):
-        # check if you failed
-        for req in self.first_requests:
-            req.dont_filter = True
-            yield req
-        self.first_requests = None
         yield from self.request_manage_friends_low(self.SUBJECT)
         yield from self.request_person_info_medium(self.SUBJECT)
+
+    def parse(self, response):
+        pass
 
     def manage_friends(self, response):
         current_person = response.meta['current_person']
