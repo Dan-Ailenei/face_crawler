@@ -1,11 +1,11 @@
 import six
 from scrapy.core.engine import ExecutionEngine
 from scrapy.core.scraper import Scraper
-from scrapy.crawler import Crawler, CrawlerRunner
+from scrapy.crawler import Crawler, CrawlerProcess
 from scrapy.utils.misc import load_object
 
 
-class MyCrawlerRunner(CrawlerRunner):
+class MyCrawlerProcess(CrawlerProcess):
     def create_crawler(self, crawler_or_spidercls):
         if isinstance(crawler_or_spidercls, MyCrawler):
             return crawler_or_spidercls
@@ -15,6 +15,17 @@ class MyCrawlerRunner(CrawlerRunner):
         if isinstance(spidercls, six.string_types):
             spidercls = self.spider_loader.load(spidercls)
         return MyCrawler(spidercls, self.settings)
+
+
+class CloseOnlyLastTime:
+    def __init__(self, f):
+        self.f = f
+        self.first = True
+
+    def __call__(self, *args, **kwargs):
+        if not self.first:
+            self.f(*args, **kwargs)
+        self.first = False
 
 
 class MyExecutionEngine(ExecutionEngine):
@@ -36,6 +47,7 @@ class MyExecutionEngine(ExecutionEngine):
             downloader_cls = load_object(self.settings['DOWNLOADER'])
             MyExecutionEngine.downloader = downloader_cls(crawler)
         self.downloader = MyExecutionEngine.downloader
+        self.downloader.close = CloseOnlyLastTime(self.downloader.close)
 
 
 class MyCrawler(Crawler):

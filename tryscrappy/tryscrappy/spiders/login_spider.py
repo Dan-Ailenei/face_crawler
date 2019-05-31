@@ -16,4 +16,3 @@ class LoginSpider(Spider):
 
     def after_login(self, response):
         print("SHUTTING DOWN")
-

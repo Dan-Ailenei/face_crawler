@@ -1,10 +1,6 @@
-from scrapy.crawler import CrawlerRunner
-
 from orm.ormsetup import setup_orm
-from tryscrappy.mechanism import MyCrawlerRunner
-
 setup_orm()
-
+from tryscrappy.mechanism import MyCrawlerProcess
 from tryscrappy.spiders.login_spider import LoginSpider
 from scrapy.utils.project import get_project_settings
 from tryscrappy.spiders.person_spider import PersonSpider
@@ -13,14 +9,15 @@ from scrapy.utils.log import configure_logging
 
 
 configure_logging()
-runner = CrawlerRunner(
-    get_project_settings()
-)
+settings = get_project_settings()
+jobdir = settings.pop('JOBDIR')
+runner = MyCrawlerProcess(settings)
 
 
 @defer.inlineCallbacks
 def crawl():
     yield runner.crawl(LoginSpider)
+    runner.settings['JOBDIR'] = jobdir
     yield runner.crawl(PersonSpider)
     reactor.stop()
 
