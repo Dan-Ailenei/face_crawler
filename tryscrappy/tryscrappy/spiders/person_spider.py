@@ -62,10 +62,6 @@ class PersonSpider(Spider):
 
     def get_person_info(self, response):
         current_person = response.meta['current_person']
-        if 'php' in current_person.identifier:
-            from scrapy.shell import inspect_response
-            inspect_response(response, self)
-
         url, siblings = self.selector.select_person_info_and_picture_url(response, current_person)
 
         if url:
