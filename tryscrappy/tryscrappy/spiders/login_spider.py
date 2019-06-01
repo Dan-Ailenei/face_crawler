@@ -15,4 +15,5 @@ class LoginSpider(Spider):
                                         callback=self.after_login, dont_filter=True)
 
     def after_login(self, response):
+        # if not 200 you should stop crawling
         print("SHUTTING DOWN")

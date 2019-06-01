@@ -10,7 +10,7 @@ from scrapy.utils.log import configure_logging
 
 configure_logging()
 settings = get_project_settings()
-jobdir = settings.pop('JOBDIR')
+jobdir = settings.pop('JOBDIR', None)
 runner = MyCrawlerProcess(settings)
 
 

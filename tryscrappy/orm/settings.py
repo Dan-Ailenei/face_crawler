@@ -6,6 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '2w95$iuqxn#3&e_nc1252jqvatkfd^x7@l0)2=^4j#gw_xrr46'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'pictures')
 # Application definition
 
 INSTALLED_APPS = [

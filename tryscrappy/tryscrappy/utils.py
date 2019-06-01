@@ -3,23 +3,27 @@ from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode, parse_qs
 
 
 def convert_date(date):
-    d, m, y = date.split()
-    m = {
-        'ianuarie': 'January',
-        'februarie': 'February',
-        'martie': 'March',
-        'aprilie': 'April',
-        'mai': 'May',
-        'iunie': 'June',
-        'iulie': 'July',
-        'august': 'August',
-        'septembrie': 'September',
-        'octombrie': 'October',
-        'noiembrie': 'November',
-        'decembrie': 'December'
-    }[m.lower()]
-
-    return datetime.strptime(f'{d} {m} {y}', "%d %B %Y").date()
+    components = date.split()
+    if len(components) == 3:
+        d, m, y = components
+        m = {
+            'ianuarie': 'January',
+            'februarie': 'February',
+            'martie': 'March',
+            'aprilie': 'April',
+            'mai': 'May',
+            'iunie': 'June',
+            'iulie': 'July',
+            'august': 'August',
+            'septembrie': 'September',
+            'octombrie': 'October',
+            'noiembrie': 'November',
+            'decembrie': 'December'
+        }[m.lower()]
+        date = datetime.strptime(f'{d} {m} {y}', "%d %B %Y").date()
+    else:
+        date = datetime.strptime(date, "%Y").date()
+    return date
 
 
 def clean_url(current_friend_id, *fargs):
@@ -42,3 +46,12 @@ def compare_url_existing_parameters(url1, url2):
         if key in kargs2 and kargs2[key] != val:
             rez = False
     return rez
+
+
+def add_query_argument(url, key, value):
+    url_parts = list(urlparse(url))
+    qs = url_parts[4]
+    args = parse_qsl(qs)
+    args.append((key, value))
+    url_parts[4] = urlencode(args)
+    return urlunparse(url_parts)

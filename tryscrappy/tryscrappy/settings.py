@@ -1,9 +1,10 @@
-
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 # 'USER_AGENT': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.100 Safari/537.36)',
+import os
+
 COOKIES_ENABLED = True
 FACEBOOK_NAME = 'Dan Ailenei'
 FACEBOOK_ID = '/dan.ailenei.9'
@@ -16,7 +17,8 @@ SCHEDULER_DEBUG = True
 # 'LOG_FILE': 'logs.txt',
 LOG_DATEFORMAT = '%d-%m-%Y %H:%M:%S'
 # 'LOG_STDOUT': True,
-JOBDIR = "crawls/person-1"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JOBDIR = os.path.join(BASE_DIR, "crawls/person-1")
 
 DEFAULT_REQUEST_HEADERS = {
     'Accept': 'text/html',
@@ -30,6 +32,9 @@ NEWSPIDER_MODULE = 'tryscrappy.spiders'
 
 ROBOTSTXT_OBEY = False
 
-# DOWNLOADER_MIDDLEWARES = {
-#     'tryscrappy.middlewares.LogginDownloaderMiddleware': 710,
-# }
+NOT_FACES_LIST = \
+    [
+    'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/10354686_10150004552801856_220367501106153455_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=a2814e99ff91bcbfb23ee5a57b82909f&oe=5D91883F',
+    'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/10645251_10150004552801937_4553731092814901385_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=12e325c3d35a470bb016a3a472aeb057&oe=5D914140',
+    'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/1379841_10150004552801901_469209496895221757_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=7ef0d577ed46ba37e83fe945204953b6&oe=5D97BE80'
+        ]
