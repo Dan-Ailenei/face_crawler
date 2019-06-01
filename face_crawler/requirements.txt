@@ -1,0 +1,4 @@
+Scrapy==1.6.0
+beautifulsoup4==4.6.3
+django==2.1.7
+django_extensions==2.1.7

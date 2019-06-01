@@ -1,9 +1,8 @@
-nu uita sa faci un requirements
-trebuie verificat daca numele este valid pentru prioritate
+trebuie verificat daca numele este valid :??
 daca nu merge netu calumea, facebook trimite doar o parte din response
-tre sa salvezi rudele numa daca nu s deja in db
 programul ia 521 din 559 de linkuri, regexu nu mere la toate
 schimba ora la logurile de scrapy
+nu ar trebui sa stingi crawleru cand face setup
 
 http://www.googleguide.com/cached_pages.html
 
