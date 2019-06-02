@@ -21,3 +21,9 @@ if __name__ == '__main__':
     os.system(f"pip install -r {req_path}")
     os.system("pip install cmake")
     os.system("pip install face_recognition")
+
+    print("If you want to make available the run_crawler command from anywhere, you should add this path to the env path\n"
+          "If you are on linux you could use a sheebang and if you are on windows you can associate the .py extention "
+          "with a certain command. For that you could run the next commands with administrator rights. \n"
+          "assoc .py=Python\n"
+          '"ftype Python="PATH_TO_PYTHON_INTERPRETER.exe" "%1" %*"')
