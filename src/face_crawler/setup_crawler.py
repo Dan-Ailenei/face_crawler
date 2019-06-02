@@ -15,5 +15,9 @@ if __name__ == '__main__':
 
     execute_from_command_line([sys.argv[0], "makemigrations", "models"])
     execute_from_command_line([sys.argv[0], "migrate"])
-    req_path = os.path.join('..', 'requirements.txt')
+    remove = os.path.dirname
+    BASE_DIR = remove(remove(remove(remove(os.path.dirname(os.path.abspath(__file__))))))
+    req_path = os.path.join('..', '..', 'requirements.txt')
     os.system(f"pip install -r {req_path}")
+    os.system("pip install cmake")
+    os.system("pip install face_recognition")

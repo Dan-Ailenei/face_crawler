@@ -10,7 +10,7 @@ SCHEDULER_DEBUG = True
 # 'LOG_FILE': 'logs.txt',
 LOG_DATEFORMAT = '%d-%m-%Y %H:%M:%S'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JOBDIR = os.path.join(BASE_DIR, "crawls/person-1")
+JOBDIR = os.path.join(BASE_DIR, "resources", "cached_requests/person-1")
 
 DEFAULT_REQUEST_HEADERS = {
     'Accept': 'text/html',
@@ -19,10 +19,14 @@ DEFAULT_REQUEST_HEADERS = {
 
 BOT_NAME = 'tryscrappy'
 
-SPIDER_MODULES = ['face_crawler.spiders']
-NEWSPIDER_MODULE = 'face_crawler.spiders'
+SPIDER_MODULES = ['crawler_components.spiders']
+NEWSPIDER_MODULE = 'crawler_components.spiders'
 
 ROBOTSTXT_OBEY = False
+CREDENTIALS = {
+    'email': None,
+    'pass': None
+}
 
 # custom settings
 FACEBOOK_NAME = 'Dan Ailenei'

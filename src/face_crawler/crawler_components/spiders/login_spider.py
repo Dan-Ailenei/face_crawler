@@ -1,7 +1,6 @@
 import scrapy
 from scrapy import FormRequest, Spider
-
-from face_crawler.credentials import credentials
+from scrapy.conf import settings
 
 
 class LoginSpider(Spider):
@@ -11,7 +10,7 @@ class LoginSpider(Spider):
         yield scrapy.Request('https://www.facebook.com/login', self.parse, dont_filter=True)
 
     def parse(self, response):
-        yield FormRequest.from_response(response, formdata=credentials,
+        yield FormRequest.from_response(response, formdata=settings['CREDENTIALS'],
                                         callback=self.after_login, dont_filter=True)
 
     def after_login(self, response):

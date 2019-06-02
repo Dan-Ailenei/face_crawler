@@ -11,8 +11,8 @@ import requests
 import scrapy
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from scrapy import Spider
-from face_crawler.selector import PageSelector
-from face_crawler.utils import clean_url, add_query_argument
+from crawler_components.selector import PageSelector
+from crawler_components.utils import clean_url, add_query_argument
 from models.models import Person
 
 try:

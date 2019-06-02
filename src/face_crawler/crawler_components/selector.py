@@ -1,11 +1,9 @@
 import re
 from bs4 import BeautifulSoup, Comment
 import logging
-
 from scrapy.conf import settings
-
 from models.models import Person
-from face_crawler.utils import convert_date, compare_url_existing_parameters
+from .utils import convert_date, compare_url_existing_parameters
 
 
 class PageSelector:

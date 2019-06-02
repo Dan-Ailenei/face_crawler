@@ -1,9 +1,9 @@
-from orm.ormsetup import setup_orm
+from configuration_setup.ormsetup import setup_orm
 setup_orm()
-from face_crawler.mechanism import MyCrawlerProcess
-from face_crawler.spiders.login_spider import LoginSpider
+from crawler_components.mechanism import MyCrawlerProcess
+from crawler_components.spiders.login_spider import LoginSpider
 from scrapy.utils.project import get_project_settings
-from face_crawler.spiders.person_spider import PersonSpider
+from crawler_components.spiders.person_spider import PersonSpider
 from twisted.internet import reactor, defer
 from scrapy.utils.log import configure_logging
 
