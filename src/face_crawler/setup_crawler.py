@@ -3,6 +3,11 @@ import sys
 
 
 if __name__ == '__main__':
+    req_path = os.path.join('..', '..', 'requirements.txt')
+    os.system(f"pip install -r {req_path}")
+    os.system("pip install cmake")
+    os.system("pip install face_recognition")
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orm.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -15,12 +20,6 @@ if __name__ == '__main__':
 
     execute_from_command_line([sys.argv[0], "makemigrations", "models"])
     execute_from_command_line([sys.argv[0], "migrate"])
-    remove = os.path.dirname
-    BASE_DIR = remove(remove(remove(remove(os.path.dirname(os.path.abspath(__file__))))))
-    req_path = os.path.join('..', '..', 'requirements.txt')
-    os.system(f"pip install -r {req_path}")
-    os.system("pip install cmake")
-    os.system("pip install face_recognition")
 
     print("If you want to make available the run_crawler command from anywhere, you should add this path to the env path\n"
           "If you are on linux you could use a sheebang and if you are on windows you can associate the .py extention "
