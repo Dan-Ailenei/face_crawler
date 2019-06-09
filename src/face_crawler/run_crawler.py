@@ -12,12 +12,14 @@ def main():
     configure_logging()
     settings = get_project_settings()
     jobdir = settings.pop('JOBDIR', None)
+    downloader_middlewares = settings.pop('DOWNLOADER_MIDDLEWARES', None)
     runner = MyCrawlerProcess(settings)
 
     @defer.inlineCallbacks
     def crawl():
         yield runner.crawl(LoginSpider)
         runner.settings['JOBDIR'] = jobdir
+        runner.settings['DOWNLOADER_MIDDLEWARES'] = downloader_middlewares
         yield runner.crawl(PersonSpider)
         reactor.stop()
 

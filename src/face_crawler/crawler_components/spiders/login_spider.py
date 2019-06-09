@@ -15,4 +15,8 @@ class LoginSpider(Spider):
 
     def after_login(self, response):
         # if not 200 you should stop crawling
-        print("SHUTTING DOWN")
+        if response.status == 200:
+            print("LOGGED IN SUCCESFULLY")
+        else:
+            print("INVALID CREDENTIALS")
+            # shut down somehow

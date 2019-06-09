@@ -155,7 +155,9 @@ class PageSelector:
             for trace in traces:
                 result = self._find_sibling_url(trace, _find_trace, 3)
                 if result:
-                    rez.append((sibling, Person(identifier=result.get('href'), name=result.get_text())))
+                    pers, created = Person.objects.get_or_create(identifier=result.get('href'), name=result.get_text())
+                    if created:
+                        rez.append((sibling, pers))
                 else:
                     logging.debug(f"{self._select_siblings.__name__} found the word {sibling} but couldn't find its url")
 

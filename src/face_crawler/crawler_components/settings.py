@@ -35,5 +35,11 @@ NOT_FACES_LIST = \
     [
     'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/10354686_10150004552801856_220367501106153455_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=a2814e99ff91bcbfb23ee5a57b82909f&oe=5D91883F',
     'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/10645251_10150004552801937_4553731092814901385_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=12e325c3d35a470bb016a3a472aeb057&oe=5D914140',
-    'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/1379841_10150004552801901_469209496895221757_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=7ef0d577ed46ba37e83fe945204953b6&oe=5D97BE80'
+    'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/1379841_10150004552801901_469209496895221757_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=7ef0d577ed46ba37e83fe945204953b6&oe=5D97BE80',
         ]
+
+DOWNLOADER = 'crawler_components.mechanism.MyDownloader'
+SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
+SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
+
+SERVER_URL = 'http://localhost:8000'

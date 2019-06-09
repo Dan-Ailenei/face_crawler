@@ -1,29 +1,28 @@
-from scrapy import Request, signals
+from scrapy import signals
 from scrapy.exceptions import IgnoreRequest
 
 
-class LogginDownloaderMiddleware:
-    def __init__(self):
-        self.first = True
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
-
-    def process_request(self, request, spider):
-        # Called for each request that goes through the downloader
-        # middleware, imediatly after cookie downloader middleware.
-        if spider.first_requests is not None and request.callback not in (spider.parse, spider.after_login):
-            spider.first_requests.append(request)
-            if self.first:
-                self.first = False
-                return Request('https://www.facebook.com/login', spider.parse, dont_filter=True,
-                               priority=10000000)
-            else:
-                raise IgnoreRequest("You are not logged in yet, don't stop the program untill then "
-                                    "you will lose requests")
-
-    def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+# class AldreadyScrapedMiddleware:
+#     def __init__(self):
+#         self.client = Client()
+#
+#     @classmethod
+#     def from_crawler(cls, crawler):
+#         instance = cls()
+#         crawler.signals.connect(instance.spider_opened, signal=signals.spider_opened)
+#         return instance
+#
+#     def process_request(self, request, spider):
+#         current_person = request.meta['current_person']
+#         already_scraped = False
+#         if request.callback == spider.manage_friends_callback:
+#             already_scraped = self.client.person_friends_are_scraped(current_person)
+#         # momentan sunt doar alte 2 callback-uri
+#         elif request.callback == spider.get_person_info_callback:
+#             already_scraped = self.client.person_is_in_process(current_person)
+#
+#         if already_scraped:
+#             raise IgnoreRequest(f"This url has already been scraped {request.url}")
+#
+#     def spider_opened(self, spider):
+#         spider.logger.info('Spider opened: %s' % spider.name)

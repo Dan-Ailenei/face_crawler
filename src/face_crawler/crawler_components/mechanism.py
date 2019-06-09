@@ -1,5 +1,7 @@
 import six
+from scrapy.core.downloader import Downloader, _get_concurrency_delay, Slot
 from scrapy.core.engine import ExecutionEngine
+from scrapy.core.scheduler import Scheduler
 from scrapy.core.scraper import Scraper
 from scrapy.crawler import Crawler, CrawlerProcess
 from scrapy.utils.misc import load_object
@@ -53,3 +55,17 @@ class MyExecutionEngine(ExecutionEngine):
 class MyCrawler(Crawler):
     def _create_engine(self):
         return MyExecutionEngine(self, lambda _: self.stop())
+
+
+class MyDownloader(Downloader):
+    def _get_slot(self, request, spider):
+        key = self._get_slot_key(request, spider)
+        if key not in self.slots:
+            conc = self.ip_concurrency if self.ip_concurrency else self.domain_concurrency
+            if 'facebook' in key:
+                conc, delay = _get_concurrency_delay(conc, spider, self.settings)
+            else:
+                conc, delay = 10, 0
+            self.slots[key] = Slot(conc, delay, self.randomize_delay)
+
+        return key, self.slots[key]
