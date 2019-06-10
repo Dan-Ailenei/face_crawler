@@ -1,3 +1,7 @@
+from scrapy.exceptions import CloseSpider
+from scrapy.signalmanager import SignalManager
+from scrapy.signals import spider_closed
+
 from configuration_setup.ormsetup import setup_orm
 setup_orm()
 from crawler_components.mechanism import MyCrawlerProcess
@@ -18,9 +22,11 @@ def main():
     @defer.inlineCallbacks
     def crawl():
         yield runner.crawl(LoginSpider)
-        runner.settings['JOBDIR'] = jobdir
-        runner.settings['DOWNLOADER_MIDDLEWARES'] = downloader_middlewares
-        yield runner.crawl(PersonSpider)
+
+        if LoginSpider.logged_in:
+            runner.settings['JOBDIR'] = jobdir
+            runner.settings['DOWNLOADER_MIDDLEWARES'] = downloader_middlewares
+            yield runner.crawl(PersonSpider)
         reactor.stop()
 
     crawl()

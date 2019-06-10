@@ -1,6 +1,6 @@
 import datetime
 
-from django.db.models import ManyToManyField
+from django.db.models import ManyToManyField, ForeignKey
 from django.db.models.fields.files import ImageFieldFile
 
 
@@ -14,6 +14,12 @@ def person_to_dict(instance):
             else:
                 if f.name != 'friends':
                     data[f.name] = [(pers.identifier, pers.name) for pers in f.value_from_object(instance)]
+        elif isinstance(f, ForeignKey):
+            pers = getattr(instance, f.name)
+            if pers:
+                data[f.name] = pers.identifier, pers.name
+            else:
+                data[f.name] = pers
         else:
             val = f.value_from_object(instance)
             if isinstance(val, datetime.date):

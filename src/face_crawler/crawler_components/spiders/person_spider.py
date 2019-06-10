@@ -58,26 +58,26 @@ class PersonSpider(Spider):
         current_person = response.meta['current_person']
         friends_a_tags, next_url = self.selector.select_hrefs_and_next_url(response, current_person)
 
-        persons_ids = []
+        friends = []
         for friend_a in friends_a_tags:
             friend_id = clean_url(friend_a.get('href'), "id")
-            persons_ids.append(friend_id)
-            current_friend = self.check_if_friend_saved(friend_id)
-            if not current_friend:
-                current_friend = Person.objects.create(identifier=friend_id, name=friend_a.get_text())
-                current_person.add_to_friends(current_friend)
+            friend_name = friend_a.get_text()
+            current_friend = Person.objects.get_or_create(identifier=friend_id, name=friend_name)[0]
+            current_person.add_to_friends(current_friend)
+            friends.append(current_friend)
 
-        yield self.request_verify_friends_are_scraped(persons_ids, current_person, 1000)
+        yield self.request_verify_friends_are_scraped(friends, current_person, 1001)
         if next_url:
             yield scrapy.Request(f'{self.MOBILE_URL}{next_url}', self.get_person_friends_callback,
-                                 meta={'current_person': current_person}, priority=1001)
+                                 meta={'current_person': current_person}, priority=1000)
 
     def manage_friends_callback(self, response):
+        friends = response.meta['friends']
         persons_ids = json.loads(response.body)['persons_ids']
-
-        for friend_id in persons_ids:
-            yield self.request_get_friends_low(friend_id)
-            yield self.request_person_info_medium(friend_id)
+        friends = [friend for friend in friends if friend.identifier in persons_ids]
+        for friend in friends:
+            yield self.request_get_friends_low(friend)
+            yield self.request_person_info_medium(friend)
 
     def get_person_info_callback(self, response):
         current_person = response.meta['current_person']
@@ -106,7 +106,7 @@ class PersonSpider(Spider):
                 using_url = self.MAIN_URL
             yield scrapy.Request(f'{using_url}{url}', self.get_person_picture_callback,
                                  meta={'current_person': current_person,
-                                       'meta_url': using_url}, priority=100)
+                                       'meta_url': using_url}, priority=101)
         else:
             current_person.scraped = True
             yield self.request_post_person_high(current_person)
@@ -115,13 +115,14 @@ class PersonSpider(Spider):
 
     def get_person_picture_callback(self, response):
         meta_url = response.meta['meta_url']
+        im_bytes = b''
         if meta_url == self.MAIN_URL:
             picture_url = self.selector.select_profile_image(response)
         else:
             picture_url = self.selector.select_profile_image_mobile(response)
         current_person = response.meta['current_person']
         if picture_url:
-            profile_picturre, n_faces = self.get_profile_picture_url(picture_url, current_person.name)
+            profile_picturre, n_faces, im_bytes = self.get_profile_picture_url(picture_url, current_person.name)
             if profile_picturre:
                 current_person.picture = profile_picturre
                 current_person.number_of_face = n_faces
@@ -130,7 +131,7 @@ class PersonSpider(Spider):
                           f"url: {response.url}")
         current_person.scraped = True
         current_person.save()
-        yield self.request_post_person_high(current_person)
+        yield self.request_post_person_high(current_person, im_bytes)
 
     def try_get_other_picture_with_face_url(self, friend):
         raise NotImplemented("We do not support to try another picture yet")
@@ -149,17 +150,17 @@ class PersonSpider(Spider):
     def get_current_friends_url(self, current_person):
         return f'{self.get_current_url(self.MOBILE_URL, current_person)}/friends'
 
-    def request_get_friends_low(self, current_person_id):
-        return self.request_get_friends(current_person_id, -100000)
+    def request_get_friends_low(self, current_person):
+        return self.request_get_friends(current_person, -100000)
 
     def request_person_info_medium(self, current_person):
         return scrapy.Request(self.get_profile_url(current_person),
                               self.get_person_info_callback, meta={'current_person': current_person},
                               priority=100)
 
-    def request_get_friends(self, current_person_id, priority):
-        return scrapy.Request(f'{self.MOBILE_URL}{current_person_id}/friends', self.get_person_friends_callback,
-                              meta={'current_person': current_person_id}, priority=priority)
+    def request_get_friends(self, current_person, priority):
+        return scrapy.Request(f'{self.MOBILE_URL}{current_person.identifier}/friends', self.get_person_friends_callback,
+                              meta={'current_person': current_person}, priority=priority)
 
     @staticmethod
     def write_to_file(response, filename):
@@ -186,17 +187,17 @@ class PersonSpider(Spider):
             array_image = np.array(Image.open(img_bytes))
             no_faces = len(face_recognition.face_locations(array_image))
         img = InMemoryUploadedFile(img_bytes, None, f'{name}.jpg', 'image/jpeg', img_bytes.getbuffer().nbytes, None)
-        return img, no_faces
+        return img, no_faces, image_request.content
 
     def parse(self, response):
         pass
 
-    def request_verify_friends_are_scraped(self, persons_ids, current_person, priority):
-        payload = json.dumps({'ids': persons_ids, 'current_person_id': current_person.identifier})
+    def request_verify_friends_are_scraped(self, friends, current_person, priority):
+        payload = json.dumps({'ids_names': [(friend.identifier, friend.name) for friend in friends],
+                              'current_person_id_name': (current_person.identifier, current_person.name)})
         return scrapy.Request(f'{self.SERVER_URL}/persons/filter', self.manage_friends_callback,
-                              body=payload, priority=priority)
+                              body=payload, priority=priority, method='POST', meta={'friends': friends})
 
-    def request_post_person_high(self, current_person):
-        payload = person_to_dict(current_person)
-        return scrapy.Request(f'{self.SERVER_URL}/persons', method='POST', body=payload, priority=1050,
-                              headers={'Content-Type': 'application/json; charset=UTF-8'})
+    def request_post_person_high(self, current_person, im_bytes=b''):
+        payload = json.dumps(person_to_dict(current_person)).encode('utf-8')
+        return scrapy.Request(f'{self.SERVER_URL}/persons', method='POST', body=payload+im_bytes, priority=1050)

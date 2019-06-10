@@ -1,6 +1,13 @@
-# 'USER_AGENT': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.100 Safari/537.36)',
 import os
 
+CREDENTIALS = {
+    'email': None,
+    'pass': None
+}
+FACEBOOK_NAME = 'Dan Ailenei'
+FACEBOOK_ID = '/dan.ailenei.9'
+
+# CLOSESPIDER_ERRORCOUNT = 1
 COOKIES_ENABLED = True
 CONCURRENT_REQUESTS = 1
 DOWNLOAD_DELAY = 5  # 0.25 - 250 ms of delay
@@ -23,14 +30,8 @@ SPIDER_MODULES = ['crawler_components.spiders']
 NEWSPIDER_MODULE = 'crawler_components.spiders'
 
 ROBOTSTXT_OBEY = False
-CREDENTIALS = {
-    'email': None,
-    'pass': None
-}
 
 # custom settings
-FACEBOOK_NAME = 'Dan Ailenei'
-FACEBOOK_ID = '/dan.ailenei.9'
 NOT_FACES_LIST = \
     [
     'https://scontent.fclj2-1.fna.fbcdn.net/v/t1.0-1/cp0/e15/q65/c15.0.50.50a/p50x50/10354686_10150004552801856_220367501106153455_n.jpg?_nc_cat=1&efg=eyJpIjoiYiJ9&_nc_ht=scontent.fclj2-1.fna&oh=a2814e99ff91bcbfb23ee5a57b82909f&oe=5D91883F',
