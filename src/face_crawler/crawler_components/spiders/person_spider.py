@@ -176,7 +176,7 @@ class PersonSpider(Spider):
 
     @staticmethod
     def get_profile_picture_url(picture_url, name):
-        image_request = requests.get(picture_url)
+        image_request = requests.get(picture_url, timeout=10)
         no_faces = None
         if image_request.status_code != 200:
             logging.debug(f"this url could not be downloaded {picture_url}")
