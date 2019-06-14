@@ -43,4 +43,4 @@ DOWNLOADER = 'crawler_components.mechanism.MyDownloader'
 SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
 
-SERVER_URL = 'http://localhost:8000'
+SERVER_URL = 'http://kinship.go.ro'
